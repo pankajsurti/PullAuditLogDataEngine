@@ -54,7 +54,7 @@ $StoredTime  = $startTimeDt.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
 
 #Storage Account Settings, this is needed to access the storage queue
 $storageAccountName = "storageaccountdlprg84fe"
-$storageAccountKey = "Q3t4L72tAvf31tF0Ok8uRnXGUI2HtkIgDf4YmUoJy2mkx7/aTD8Qw9d0EusGLVrL6MPGEFqc+KrDnIKWTwHmpQ=="
+$storageAccountKey = "TODO TO ADD"
 $storageQueue = 'outputqueue'
 
 
