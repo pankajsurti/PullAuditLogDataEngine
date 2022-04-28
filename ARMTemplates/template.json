@@ -1,0 +1,2295 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_DLP_QueueEvents_name": {
+            "defaultValue": "DLP-QueueEvents",
+            "type": "String"
+        },
+        "sites_DLP_StoreEvents_name": {
+            "defaultValue": "DLP-StoreEvents",
+            "type": "String"
+        },
+        "serverfarms_ASP_dlprg_938f_name": {
+            "defaultValue": "ASP-dlprg-938f",
+            "type": "String"
+        },
+        "serverfarms_ASP_dlprg_ba77_name": {
+            "defaultValue": "ASP-dlprg-ba77",
+            "type": "String"
+        },
+        "serverfarms_ASP_dlprg_bdc1_name": {
+            "defaultValue": "ASP-dlprg-bdc1",
+            "type": "String"
+        },
+        "databaseAccounts_dlpdata_name": {
+            "defaultValue": "dlpdata",
+            "type": "String"
+        },
+        "components_DLP_QueueEvents_name": {
+            "defaultValue": "DLP-QueueEvents",
+            "type": "String"
+        },
+        "components_DLP_StoreEvents_name": {
+            "defaultValue": "DLP-StoreEvents",
+            "type": "String"
+        },
+        "virtualNetworks_dlp_rg_vnet_name": {
+            "defaultValue": "dlp-rg-vnet",
+            "type": "String"
+        },
+        "storageAccounts_dlpazstoreage_name": {
+            "defaultValue": "dlpazstoreage",
+            "type": "String"
+        },
+        "storageAccounts_storageaccountdlprg84fe_name": {
+            "defaultValue": "storageaccountdlprg84fe",
+            "type": "String"
+        },
+        "storageAccounts_storageaccountdlprg9557_name": {
+            "defaultValue": "storageaccountdlprg9557",
+            "type": "String"
+        },
+        "storageAccounts_storageaccountdlprgb267_name": {
+            "defaultValue": "storageaccountdlprgb267",
+            "type": "String"
+        },
+        "actionGroups_Application_Insights_Smart_Detection_name": {
+            "defaultValue": "Application Insights Smart Detection",
+            "type": "String"
+        },
+        "networkSecurityGroups_dlp_rg_vnet_default_nsg_centralus_name": {
+            "defaultValue": "dlp-rg-vnet-default-nsg-centralus",
+            "type": "String"
+        },
+        "smartdetectoralertrules_failure_anomalies___dlp_queueevents_name": {
+            "defaultValue": "failure anomalies - dlp-queueevents",
+            "type": "String"
+        },
+        "smartdetectoralertrules_failure_anomalies___dlp_storeevents_name": {
+            "defaultValue": "failure anomalies - dlp-storeevents",
+            "type": "String"
+        },
+        "smartdetectoralertrules_failure_anomalies___contoso_api_dp2020920_name": {
+            "defaultValue": "failure anomalies - contoso-api-dp2020920",
+            "type": "String"
+        },
+        "components_contoso_api_dp2020920_externalid": {
+            "defaultValue": "/subscriptions/e54b393b-8772-4e4c-9088-4074b929bf94/resourceGroups/dlp-rg/providers/microsoft.insights/components/contoso-api-dp2020920",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2021-11-15-preview",
+            "name": "[parameters('databaseAccounts_dlpdata_name')]",
+            "location": "West US",
+            "tags": {
+                "defaultExperience": "Core (SQL)",
+                "hidden-cosmos-mmspecial": "",
+                "CosmosAccountType": "Non-Production"
+            },
+            "kind": "GlobalDocumentDB",
+            "identity": {
+                "type": "None"
+            },
+            "properties": {
+                "publicNetworkAccess": "Enabled",
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "disableKeyBasedMetadataWriteAccess": false,
+                "enableFreeTier": false,
+                "enableAnalyticalStorage": true,
+                "analyticalStorageConfiguration": {},
+                "databaseAccountOfferType": "Standard",
+                "networkAclBypass": "None",
+                "disableLocalAuth": false,
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
+                },
+                "locations": [
+                    {
+                        "locationName": "West US",
+                        "provisioningState": "Succeeded",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "cors": [],
+                "capabilities": [],
+                "ipRules": [],
+                "backupPolicy": {
+                    "type": "Periodic",
+                    "periodicModeProperties": {
+                        "backupIntervalInMinutes": 240,
+                        "backupRetentionIntervalInHours": 8,
+                        "backupStorageRedundancy": "Geo"
+                    }
+                },
+                "networkAclBypassResourceIds": [],
+                "diagnosticLogSettings": {
+                    "enableFullTextQuery": "None"
+                }
+            }
+        },
+        {
+            "type": "microsoft.insights/actionGroups",
+            "apiVersion": "2021-09-01",
+            "name": "[parameters('actionGroups_Application_Insights_Smart_Detection_name')]",
+            "location": "Global",
+            "properties": {
+                "groupShortName": "SmartDetect",
+                "enabled": true,
+                "emailReceivers": [],
+                "smsReceivers": [],
+                "webhookReceivers": [],
+                "eventHubReceivers": [],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [],
+                "azureFunctionReceivers": [],
+                "armRoleReceivers": [
+                    {
+                        "name": "Monitoring Contributor",
+                        "roleId": "749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+                        "useCommonAlertSchema": true
+                    },
+                    {
+                        "name": "Monitoring Reader",
+                        "roleId": "43d0d8ad-25c7-4714-9337-8ba259a9fe05",
+                        "useCommonAlertSchema": true
+                    }
+                ]
+            }
+        },
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2020-02-02",
+            "name": "[parameters('components_DLP_QueueEvents_name')]",
+            "location": "centralus",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web",
+                "Request_Source": "IbizaWebAppExtensionCreate",
+                "RetentionInDays": 90,
+                "IngestionMode": "ApplicationInsights",
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled"
+            }
+        },
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2020-02-02",
+            "name": "[parameters('components_DLP_StoreEvents_name')]",
+            "location": "centralus",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web",
+                "Request_Source": "IbizaWebAppExtensionCreate",
+                "RetentionInDays": 90,
+                "IngestionMode": "ApplicationInsights",
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2020-11-01",
+            "name": "[parameters('networkSecurityGroups_dlp_rg_vnet_default_nsg_centralus_name')]",
+            "location": "centralus",
+            "properties": {
+                "securityRules": []
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-09-01",
+            "name": "[parameters('storageAccounts_dlpazstoreage_name')]",
+            "location": "westus",
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "minimumTlsVersion": "TLS1_0",
+                "allowBlobPublicAccess": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-09-01",
+            "name": "[parameters('storageAccounts_storageaccountdlprg84fe_name')]",
+            "location": "centralus",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "properties": {
+                "minimumTlsVersion": "TLS1_0",
+                "allowBlobPublicAccess": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-09-01",
+            "name": "[parameters('storageAccounts_storageaccountdlprg9557_name')]",
+            "location": "centralus",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "properties": {
+                "minimumTlsVersion": "TLS1_0",
+                "allowBlobPublicAccess": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2021-09-01",
+            "name": "[parameters('storageAccounts_storageaccountdlprgb267_name')]",
+            "location": "centralus",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "properties": {
+                "minimumTlsVersion": "TLS1_0",
+                "allowBlobPublicAccess": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2021-03-01",
+            "name": "[parameters('serverfarms_ASP_dlprg_938f_name')]",
+            "location": "Central US",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "properties": {
+                "perSiteScaling": false,
+                "elasticScaleEnabled": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0,
+                "zoneRedundant": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2021-03-01",
+            "name": "[parameters('serverfarms_ASP_dlprg_ba77_name')]",
+            "location": "Central US",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "properties": {
+                "perSiteScaling": false,
+                "elasticScaleEnabled": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0,
+                "zoneRedundant": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2021-03-01",
+            "name": "[parameters('serverfarms_ASP_dlprg_bdc1_name')]",
+            "location": "Central US",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "properties": {
+                "perSiteScaling": false,
+                "elasticScaleEnabled": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0,
+                "zoneRedundant": false
+            }
+        },
+        {
+            "type": "microsoft.alertsmanagement/smartdetectoralertrules",
+            "apiVersion": "2021-04-01",
+            "name": "[parameters('smartdetectoralertrules_failure_anomalies___contoso_api_dp2020920_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_Application_Insights_Smart_Detection_name'))]"
+            ],
+            "properties": {
+                "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
+                "state": "Enabled",
+                "severity": "Sev3",
+                "frequency": "PT1M",
+                "detector": {
+                    "id": "FailureAnomaliesDetector"
+                },
+                "scope": [
+                    "[parameters('components_contoso_api_dp2020920_externalid')]"
+                ],
+                "actionGroups": {
+                    "groupIds": [
+                        "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_Application_Insights_Smart_Detection_name'))]"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+            "apiVersion": "2021-11-15-preview",
+            "name": "[concat(parameters('databaseAccounts_dlpdata_name'), '/___Cosmos')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dlpdata_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "___Cosmos"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+            "apiVersion": "2021-11-15-preview",
+            "name": "[concat(parameters('databaseAccounts_dlpdata_name'), '/o365datadumps')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dlpdata_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "o365datadumps"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions",
+            "apiVersion": "2021-11-15-preview",
+            "name": "[concat(parameters('databaseAccounts_dlpdata_name'), '/00000000-0000-0000-0000-000000000001')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dlpdata_name'))]"
+            ],
+            "properties": {
+                "roleName": "Cosmos DB Built-in Data Reader",
+                "type": "BuiltInRole",
+                "assignableScopes": [
+                    "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dlpdata_name'))]"
+                ],
+                "permissions": [
+                    {
+                        "dataActions": [
+                            "Microsoft.DocumentDB/databaseAccounts/readMetadata",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/executeQuery",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/readChangeFeed",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/read"
+                        ],
+                        "notDataActions": []
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions",
+            "apiVersion": "2021-11-15-preview",
+            "name": "[concat(parameters('databaseAccounts_dlpdata_name'), '/00000000-0000-0000-0000-000000000002')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dlpdata_name'))]"
+            ],
+            "properties": {
+                "roleName": "Cosmos DB Built-in Data Contributor",
+                "type": "BuiltInRole",
+                "assignableScopes": [
+                    "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dlpdata_name'))]"
+                ],
+                "permissions": [
+                    {
+                        "dataActions": [
+                            "Microsoft.DocumentDB/databaseAccounts/readMetadata",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/*",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/*"
+                        ],
+                        "notDataActions": []
+                    }
+                ]
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/degradationindependencyduration')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "degradationindependencyduration",
+                    "DisplayName": "Degradation in dependency duration",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/degradationindependencyduration')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "degradationindependencyduration",
+                    "DisplayName": "Degradation in dependency duration",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/degradationinserverresponsetime')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "degradationinserverresponsetime",
+                    "DisplayName": "Degradation in server response time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/degradationinserverresponsetime')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "degradationinserverresponsetime",
+                    "DisplayName": "Degradation in server response time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/digestMailConfiguration')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "digestMailConfiguration",
+                    "DisplayName": "Digest Mail Configuration",
+                    "Description": "This rule describes the digest mail preferences",
+                    "HelpUrl": "www.homail.com",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/digestMailConfiguration')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "digestMailConfiguration",
+                    "DisplayName": "Digest Mail Configuration",
+                    "Description": "This rule describes the digest mail preferences",
+                    "HelpUrl": "www.homail.com",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/extension_billingdatavolumedailyspikeextension')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_billingdatavolumedailyspikeextension",
+                    "DisplayName": "Abnormal rise in daily data volume (preview)",
+                    "Description": "This detection rule automatically analyzes the billing data generated by your application, and can warn you about an unusual increase in your application's billing costs",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/billing-data-volume-daily-spike.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/extension_billingdatavolumedailyspikeextension')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_billingdatavolumedailyspikeextension",
+                    "DisplayName": "Abnormal rise in daily data volume (preview)",
+                    "Description": "This detection rule automatically analyzes the billing data generated by your application, and can warn you about an unusual increase in your application's billing costs",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/billing-data-volume-daily-spike.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/extension_canaryextension')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_canaryextension",
+                    "DisplayName": "Canary extension",
+                    "Description": "Canary extension",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/extension_canaryextension')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_canaryextension",
+                    "DisplayName": "Canary extension",
+                    "Description": "Canary extension",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/extension_exceptionchangeextension')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_exceptionchangeextension",
+                    "DisplayName": "Abnormal rise in exception volume (preview)",
+                    "Description": "This detection rule automatically analyzes the exceptions thrown in your application, and can warn you about unusual patterns in your exception telemetry.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/abnormal-rise-in-exception-volume.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/extension_exceptionchangeextension')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_exceptionchangeextension",
+                    "DisplayName": "Abnormal rise in exception volume (preview)",
+                    "Description": "This detection rule automatically analyzes the exceptions thrown in your application, and can warn you about unusual patterns in your exception telemetry.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/abnormal-rise-in-exception-volume.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/extension_memoryleakextension')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_memoryleakextension",
+                    "DisplayName": "Potential memory leak detected (preview)",
+                    "Description": "This detection rule automatically analyzes the memory consumption of each process in your application, and can warn you about potential memory leaks or increased memory consumption.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/memory-leak.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/extension_memoryleakextension')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_memoryleakextension",
+                    "DisplayName": "Potential memory leak detected (preview)",
+                    "Description": "This detection rule automatically analyzes the memory consumption of each process in your application, and can warn you about potential memory leaks or increased memory consumption.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/memory-leak.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/extension_securityextensionspackage')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_securityextensionspackage",
+                    "DisplayName": "Potential security issue detected (preview)",
+                    "Description": "This detection rule automatically analyzes the telemetry generated by your application and detects potential security issues.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/application-security-detection-pack.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/extension_securityextensionspackage')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_securityextensionspackage",
+                    "DisplayName": "Potential security issue detected (preview)",
+                    "Description": "This detection rule automatically analyzes the telemetry generated by your application and detects potential security issues.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/application-security-detection-pack.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/extension_traceseveritydetector')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_traceseveritydetector",
+                    "DisplayName": "Degradation in trace severity ratio (preview)",
+                    "Description": "This detection rule automatically analyzes the trace logs emitted from your application, and can warn you about unusual patterns in the severity of your trace telemetry.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/degradation-in-trace-severity-ratio.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/extension_traceseveritydetector')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_traceseveritydetector",
+                    "DisplayName": "Degradation in trace severity ratio (preview)",
+                    "Description": "This detection rule automatically analyzes the trace logs emitted from your application, and can warn you about unusual patterns in the severity of your trace telemetry.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/degradation-in-trace-severity-ratio.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/longdependencyduration')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "longdependencyduration",
+                    "DisplayName": "Long dependency duration",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/longdependencyduration')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "longdependencyduration",
+                    "DisplayName": "Long dependency duration",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/migrationToAlertRulesCompleted')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "migrationToAlertRulesCompleted",
+                    "DisplayName": "Migration To Alert Rules Completed",
+                    "Description": "A configuration that controls the migration state of Smart Detection to Smart Alerts",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": false,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": false,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/migrationToAlertRulesCompleted')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "migrationToAlertRulesCompleted",
+                    "DisplayName": "Migration To Alert Rules Completed",
+                    "Description": "A configuration that controls the migration state of Smart Detection to Smart Alerts",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": false,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": false,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/slowpageloadtime')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "slowpageloadtime",
+                    "DisplayName": "Slow page load time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/slowpageloadtime')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "slowpageloadtime",
+                    "DisplayName": "Slow page load time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_QueueEvents_name'), '/slowserverresponsetime')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "slowserverresponsetime",
+                    "DisplayName": "Slow server response time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_DLP_StoreEvents_name'), '/slowserverresponsetime')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "slowserverresponsetime",
+                    "DisplayName": "Slow server response time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2020-11-01",
+            "name": "[parameters('virtualNetworks_dlp_rg_vnet_name')]",
+            "location": "centralus",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_dlp_rg_vnet_default_nsg_centralus_name'))]"
+            ],
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/24"
+                    ]
+                },
+                "dhcpOptions": {
+                    "dnsServers": []
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24",
+                            "networkSecurityGroup": {
+                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_dlp_rg_vnet_default_nsg_centralus_name'))]"
+                            },
+                            "serviceEndpoints": [],
+                            "delegations": [],
+                            "privateEndpointNetworkPolicies": "Enabled",
+                            "privateLinkServiceNetworkPolicies": "Enabled"
+                        }
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_dlpazstoreage_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_dlpazstoreage_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg84fe_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg84fe_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg9557_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg9557_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprgb267_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprgb267_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_dlpazstoreage_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_dlpazstoreage_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {}
+                },
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg84fe_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg84fe_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {}
+                },
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg9557_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg9557_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {}
+                },
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprgb267_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprgb267_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {}
+                },
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_dlpazstoreage_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_dlpazstoreage_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg84fe_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg84fe_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg9557_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg9557_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprgb267_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprgb267_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_dlpazstoreage_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_dlpazstoreage_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg84fe_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg84fe_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg9557_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg9557_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprgb267_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprgb267_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2021-03-01",
+            "name": "[parameters('sites_DLP_QueueEvents_name')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_dlprg_bdc1_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/e54b393b-8772-4e4c-9088-4074b929bf94/resourceGroups/dlp-rg/providers/microsoft.insights/components/DLP-QueueEvents",
+                "hidden-link: /app-insights-instrumentation-key": "081fdf24-30d6-4bd8-a218-d31ccd5a9b95"
+            },
+            "kind": "functionapp",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "dlp-queueevents.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "dlp-queueevents.scm.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_dlprg_bdc1_name'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {
+                    "numberOfWorkers": -1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 1,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": false,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "D56FC95991E77FDA9826210515FECAE0A6FE96C8B223B606C92C6B7B31774A98",
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2021-03-01",
+            "name": "[parameters('sites_DLP_StoreEvents_name')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_dlprg_938f_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/e54b393b-8772-4e4c-9088-4074b929bf94/resourceGroups/dlp-rg/providers/microsoft.insights/components/DLP-StoreEvents",
+                "hidden-link: /app-insights-instrumentation-key": "7a5170b6-7c46-40ab-923f-b3876ab9f361"
+            },
+            "kind": "functionapp",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "dlp-storeevents.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "dlp-storeevents.scm.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_dlprg_938f_name'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {
+                    "numberOfWorkers": -1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 1,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": false,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "D56FC95991E77FDA9826210515FECAE0A6FE96C8B223B606C92C6B7B31774A98",
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_DLP_QueueEvents_name'), '/ftp')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_DLP_QueueEvents_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/e54b393b-8772-4e4c-9088-4074b929bf94/resourceGroups/dlp-rg/providers/microsoft.insights/components/DLP-QueueEvents",
+                "hidden-link: /app-insights-instrumentation-key": "081fdf24-30d6-4bd8-a218-d31ccd5a9b95"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_DLP_StoreEvents_name'), '/ftp')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_DLP_StoreEvents_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/e54b393b-8772-4e4c-9088-4074b929bf94/resourceGroups/dlp-rg/providers/microsoft.insights/components/DLP-StoreEvents",
+                "hidden-link: /app-insights-instrumentation-key": "7a5170b6-7c46-40ab-923f-b3876ab9f361"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_DLP_QueueEvents_name'), '/scm')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_DLP_QueueEvents_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/e54b393b-8772-4e4c-9088-4074b929bf94/resourceGroups/dlp-rg/providers/microsoft.insights/components/DLP-QueueEvents",
+                "hidden-link: /app-insights-instrumentation-key": "081fdf24-30d6-4bd8-a218-d31ccd5a9b95"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_DLP_StoreEvents_name'), '/scm')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_DLP_StoreEvents_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/e54b393b-8772-4e4c-9088-4074b929bf94/resourceGroups/dlp-rg/providers/microsoft.insights/components/DLP-StoreEvents",
+                "hidden-link: /app-insights-instrumentation-key": "7a5170b6-7c46-40ab-923f-b3876ab9f361"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_DLP_QueueEvents_name'), '/web')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_DLP_QueueEvents_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/e54b393b-8772-4e4c-9088-4074b929bf94/resourceGroups/dlp-rg/providers/microsoft.insights/components/DLP-QueueEvents",
+                "hidden-link: /app-insights-instrumentation-key": "081fdf24-30d6-4bd8-a218-d31ccd5a9b95"
+            },
+            "properties": {
+                "numberOfWorkers": -1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "powerShellVersion": "~7",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "httpLoggingEnabled": false,
+                "acrUseManagedIdentityCreds": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$DLP-QueueEvents",
+                "scmType": "None",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetRouteAllEnabled": false,
+                "vnetPrivatePortsCount": 0,
+                "cors": {
+                    "allowedOrigins": [
+                        "https://functions.azure.com",
+                        "https://functions-staging.azure.com",
+                        "https://functions-next.azure.com"
+                    ],
+                    "supportCredentials": false
+                },
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "scmMinTlsVersion": "1.0",
+                "ftpsState": "AllAllowed",
+                "preWarmedInstanceCount": 0,
+                "functionAppScaleLimit": 1,
+                "functionsRuntimeScaleMonitoringEnabled": false,
+                "minimumElasticInstanceCount": 0,
+                "azureStorageAccounts": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_DLP_StoreEvents_name'), '/web')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_DLP_StoreEvents_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/e54b393b-8772-4e4c-9088-4074b929bf94/resourceGroups/dlp-rg/providers/microsoft.insights/components/DLP-StoreEvents",
+                "hidden-link: /app-insights-instrumentation-key": "7a5170b6-7c46-40ab-923f-b3876ab9f361"
+            },
+            "properties": {
+                "numberOfWorkers": -1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "powerShellVersion": "~7",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "httpLoggingEnabled": false,
+                "acrUseManagedIdentityCreds": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$DLP-StoreEvents",
+                "scmType": "None",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetRouteAllEnabled": false,
+                "vnetPrivatePortsCount": 0,
+                "cors": {
+                    "allowedOrigins": [
+                        "https://functions.azure.com",
+                        "https://functions-staging.azure.com",
+                        "https://functions-next.azure.com"
+                    ],
+                    "supportCredentials": false
+                },
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "scmMinTlsVersion": "1.0",
+                "ftpsState": "AllAllowed",
+                "preWarmedInstanceCount": 0,
+                "functionAppScaleLimit": 1,
+                "functionsRuntimeScaleMonitoringEnabled": false,
+                "minimumElasticInstanceCount": 0,
+                "azureStorageAccounts": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_DLP_QueueEvents_name'), '/QueueEvents')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://dlp-queueevents.azurewebsites.net/admin/vfs/site/wwwroot/QueueEvents/",
+                "script_href": "https://dlp-queueevents.azurewebsites.net/admin/vfs/site/wwwroot/QueueEvents/run.ps1",
+                "config_href": "https://dlp-queueevents.azurewebsites.net/admin/vfs/site/wwwroot/QueueEvents/function.json",
+                "test_data_href": "https://dlp-queueevents.azurewebsites.net/admin/vfs/data/Functions/sampledata/QueueEvents.dat",
+                "href": "https://dlp-queueevents.azurewebsites.net/admin/functions/QueueEvents",
+                "config": {},
+                "language": "powershell",
+                "isDisabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_DLP_StoreEvents_name'), '/StoreEvents')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://dlp-storeevents.azurewebsites.net/admin/vfs/site/wwwroot/StoreEvents/",
+                "script_href": "https://dlp-storeevents.azurewebsites.net/admin/vfs/site/wwwroot/StoreEvents/run.ps1",
+                "config_href": "https://dlp-storeevents.azurewebsites.net/admin/vfs/site/wwwroot/StoreEvents/function.json",
+                "test_data_href": "https://dlp-storeevents.azurewebsites.net/admin/vfs/data/Functions/sampledata/StoreEvents.dat",
+                "href": "https://dlp-storeevents.azurewebsites.net/admin/functions/StoreEvents",
+                "config": {},
+                "test_data": "sample queue data",
+                "language": "powershell",
+                "isDisabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_DLP_QueueEvents_name'), '/', parameters('sites_DLP_QueueEvents_name'), '.azurewebsites.net')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_DLP_QueueEvents_name'))]"
+            ],
+            "properties": {
+                "siteName": "DLP-QueueEvents",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('sites_DLP_StoreEvents_name'), '/', parameters('sites_DLP_StoreEvents_name'), '.azurewebsites.net')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_DLP_StoreEvents_name'))]"
+            ],
+            "properties": {
+                "siteName": "DLP-StoreEvents",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "microsoft.alertsmanagement/smartdetectoralertrules",
+            "apiVersion": "2021-04-01",
+            "name": "[parameters('smartdetectoralertrules_failure_anomalies___dlp_queueevents_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]",
+                "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_Application_Insights_Smart_Detection_name'))]"
+            ],
+            "properties": {
+                "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
+                "state": "Enabled",
+                "severity": "Sev3",
+                "frequency": "PT1M",
+                "detector": {
+                    "id": "FailureAnomaliesDetector"
+                },
+                "scope": [
+                    "[resourceId('microsoft.insights/components', parameters('components_DLP_QueueEvents_name'))]"
+                ],
+                "actionGroups": {
+                    "groupIds": [
+                        "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_Application_Insights_Smart_Detection_name'))]"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "microsoft.alertsmanagement/smartdetectoralertrules",
+            "apiVersion": "2021-04-01",
+            "name": "[parameters('smartdetectoralertrules_failure_anomalies___dlp_storeevents_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]",
+                "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_Application_Insights_Smart_Detection_name'))]"
+            ],
+            "properties": {
+                "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
+                "state": "Enabled",
+                "severity": "Sev3",
+                "frequency": "PT1M",
+                "detector": {
+                    "id": "FailureAnomaliesDetector"
+                },
+                "scope": [
+                    "[resourceId('microsoft.insights/components', parameters('components_DLP_StoreEvents_name'))]"
+                ],
+                "actionGroups": {
+                    "groupIds": [
+                        "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_Application_Insights_Smart_Detection_name'))]"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2021-11-15-preview",
+            "name": "[concat(parameters('databaseAccounts_dlpdata_name'), '/___Cosmos/___Query')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_dlpdata_name'), '___Cosmos')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dlpdata_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "___Query",
+                    "indexingPolicy": {
+                        "indexingMode": "consistent",
+                        "automatic": true,
+                        "includedPaths": [
+                            {
+                                "path": "/*"
+                            }
+                        ],
+                        "excludedPaths": [
+                            {
+                                "path": "/\"_etag\"/?"
+                            }
+                        ]
+                    },
+                    "partitionKey": {
+                        "paths": [
+                            "/id"
+                        ],
+                        "kind": "Hash",
+                        "version": 2
+                    },
+                    "uniqueKeyPolicy": {
+                        "uniqueKeys": []
+                    },
+                    "conflictResolutionPolicy": {
+                        "mode": "LastWriterWins",
+                        "conflictResolutionPath": "/_ts"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2021-11-15-preview",
+            "name": "[concat(parameters('databaseAccounts_dlpdata_name'), '/o365datadumps/o365datadumpcontainer')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_dlpdata_name'), 'o365datadumps')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dlpdata_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "o365datadumpcontainer",
+                    "indexingPolicy": {
+                        "indexingMode": "consistent",
+                        "automatic": true,
+                        "includedPaths": [
+                            {
+                                "path": "/*"
+                            }
+                        ],
+                        "excludedPaths": [
+                            {
+                                "path": "/\"_etag\"/?"
+                            }
+                        ]
+                    },
+                    "partitionKey": {
+                        "paths": [
+                            "/o365auditlogs"
+                        ],
+                        "kind": "Hash"
+                    },
+                    "defaultTtl": 2592000,
+                    "uniqueKeyPolicy": {
+                        "uniqueKeys": []
+                    },
+                    "conflictResolutionPolicy": {
+                        "mode": "LastWriterWins",
+                        "conflictResolutionPath": "/_ts"
+                    },
+                    "analyticalStorageTtl": -1
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings",
+            "apiVersion": "2021-11-15-preview",
+            "name": "[concat(parameters('databaseAccounts_dlpdata_name'), '/o365datadumps/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_dlpdata_name'), 'o365datadumps')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dlpdata_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "throughput": 400
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2020-11-01",
+            "name": "[concat(parameters('virtualNetworks_dlp_rg_vnet_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_dlp_rg_vnet_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_dlp_rg_vnet_default_nsg_centralus_name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "10.0.0.0/24",
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_dlp_rg_vnet_default_nsg_centralus_name'))]"
+                },
+                "serviceEndpoints": [],
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Enabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg84fe_name'), '/default/azure-webjobs-hosts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_storageaccountdlprg84fe_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg84fe_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg9557_name'), '/default/azure-webjobs-hosts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_storageaccountdlprg9557_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg9557_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprgb267_name'), '/default/azure-webjobs-hosts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_storageaccountdlprgb267_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprgb267_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg84fe_name'), '/default/azure-webjobs-secrets')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_storageaccountdlprg84fe_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg84fe_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg9557_name'), '/default/azure-webjobs-secrets')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_storageaccountdlprg9557_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg9557_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprgb267_name'), '/default/azure-webjobs-secrets')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_storageaccountdlprgb267_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprgb267_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg84fe_name'), '/default/bootdiagnostics-advm-f1407ad5-2c29-4c30-90da-02c973877245')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_storageaccountdlprg84fe_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg84fe_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_dlpazstoreage_name'), '/default/dlplabcontainer')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_dlpazstoreage_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_dlpazstoreage_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg9557_name'), '/default/contoso-api-dp20209208c80')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_storageaccountdlprg9557_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg9557_name'))]"
+            ],
+            "properties": {
+                "accessTier": "TransactionOptimized",
+                "shareQuota": 5120,
+                "enabledProtocols": "SMB"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprgb267_name'), '/default/dlp-queueevents8857')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_storageaccountdlprgb267_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprgb267_name'))]"
+            ],
+            "properties": {
+                "accessTier": "TransactionOptimized",
+                "shareQuota": 5120,
+                "enabledProtocols": "SMB"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg84fe_name'), '/default/dlp-storeevents8470')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_storageaccountdlprg84fe_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg84fe_name'))]"
+            ],
+            "properties": {
+                "accessTier": "TransactionOptimized",
+                "shareQuota": 5120,
+                "enabledProtocols": "SMB"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprgb267_name'), '/default/dlp-storeevents8667')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_storageaccountdlprgb267_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprgb267_name'))]"
+            ],
+            "properties": {
+                "accessTier": "TransactionOptimized",
+                "shareQuota": 5120,
+                "enabledProtocols": "SMB"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_dlpazstoreage_name'), '/default/outputqueue')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/queueServices', parameters('storageAccounts_dlpazstoreage_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_dlpazstoreage_name'))]"
+            ],
+            "properties": {
+                "metadata": {}
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg84fe_name'), '/default/outputqueue')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/queueServices', parameters('storageAccounts_storageaccountdlprg84fe_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg84fe_name'))]"
+            ],
+            "properties": {
+                "metadata": {}
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
+            "apiVersion": "2021-09-01",
+            "name": "[concat(parameters('storageAccounts_storageaccountdlprg84fe_name'), '/default/outputqueue-poison')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/queueServices', parameters('storageAccounts_storageaccountdlprg84fe_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_storageaccountdlprg84fe_name'))]"
+            ],
+            "properties": {
+                "metadata": {}
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/throughputSettings",
+            "apiVersion": "2021-11-15-preview",
+            "name": "[concat(parameters('databaseAccounts_dlpdata_name'), '/___Cosmos/___Query/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers', parameters('databaseAccounts_dlpdata_name'), '___Cosmos', '___Query')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_dlpdata_name'), '___Cosmos')]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dlpdata_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "throughput": 400
+                }
+            }
+        }
+    ]
+}

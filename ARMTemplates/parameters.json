@@ -1,0 +1,63 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_DLP_QueueEvents_name": {
+            "value": null
+        },
+        "sites_DLP_StoreEvents_name": {
+            "value": null
+        },
+        "serverfarms_ASP_dlprg_938f_name": {
+            "value": null
+        },
+        "serverfarms_ASP_dlprg_ba77_name": {
+            "value": null
+        },
+        "serverfarms_ASP_dlprg_bdc1_name": {
+            "value": null
+        },
+        "databaseAccounts_dlpdata_name": {
+            "value": null
+        },
+        "components_DLP_QueueEvents_name": {
+            "value": null
+        },
+        "components_DLP_StoreEvents_name": {
+            "value": null
+        },
+        "virtualNetworks_dlp_rg_vnet_name": {
+            "value": null
+        },
+        "storageAccounts_dlpazstoreage_name": {
+            "value": null
+        },
+        "storageAccounts_storageaccountdlprg84fe_name": {
+            "value": null
+        },
+        "storageAccounts_storageaccountdlprg9557_name": {
+            "value": null
+        },
+        "storageAccounts_storageaccountdlprgb267_name": {
+            "value": null
+        },
+        "actionGroups_Application_Insights_Smart_Detection_name": {
+            "value": null
+        },
+        "networkSecurityGroups_dlp_rg_vnet_default_nsg_centralus_name": {
+            "value": null
+        },
+        "smartdetectoralertrules_failure_anomalies___dlp_queueevents_name": {
+            "value": null
+        },
+        "smartdetectoralertrules_failure_anomalies___dlp_storeevents_name": {
+            "value": null
+        },
+        "smartdetectoralertrules_failure_anomalies___contoso_api_dp2020920_name": {
+            "value": null
+        },
+        "components_contoso_api_dp2020920_externalid": {
+            "value": null
+        }
+    }
+}
