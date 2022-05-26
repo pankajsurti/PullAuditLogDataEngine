@@ -1,0 +1,553 @@
+{
+	"info": {
+		"_postman_id": "da532e96-016f-46cb-9a29-9ea361165f5e",
+		"name": "0-O365 Management API",
+		"description": "https://docs.microsoft.com/en-us/office/office-365-management-api/get-started-with-office-365-management-apis\n\nhttps://developermessaging.azurewebsites.net/2018/08/03/querying-the-office-365-management-apis-using-postman/",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Office 365 Service Communications API",
+			"item": [
+				{
+					"name": "Get Current Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://manage.office.com/api/v1.0/{{TenantID}}/ServiceComms/CurrentStatus",
+							"protocol": "https",
+							"host": [
+								"manage",
+								"office",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"{{TenantID}}",
+								"ServiceComms",
+								"CurrentStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Services",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://manage.office.com/api/v1.0/{{TenantID}}/ServiceComms/Services ",
+							"protocol": "https",
+							"host": [
+								"manage",
+								"office",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"{{TenantID}}",
+								"ServiceComms",
+								"Services "
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Historical Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://manage.office.com/api/v1.0/{{TenantID}}/ServiceComms/HistoricalStatus",
+							"protocol": "https",
+							"host": [
+								"manage",
+								"office",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"{{TenantID}}",
+								"ServiceComms",
+								"HistoricalStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Messages",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://manage.office.com/api/v1.0/{{TenantID}}/ServiceComms/Messages",
+							"protocol": "https",
+							"host": [
+								"manage",
+								"office",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"{{TenantID}}",
+								"ServiceComms",
+								"Messages"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Office 365 Management Activity API",
+			"item": [
+				{
+					"name": "Start a subscription",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://manage.office.com/api/v1.0/{{TenantID}}/activity/feed/subscriptions/start?contentType={{contentType}}&PublisherIdentifier={{TenantID}}",
+							"protocol": "https",
+							"host": [
+								"manage",
+								"office",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"{{TenantID}}",
+								"activity",
+								"feed",
+								"subscriptions",
+								"start"
+							],
+							"query": [
+								{
+									"key": "startTime",
+									"value": "{0}",
+									"disabled": true
+								},
+								{
+									"key": "endTime",
+									"value": "{1}",
+									"disabled": true
+								},
+								{
+									"key": "contentType",
+									"value": "{{contentType}}"
+								},
+								{
+									"key": "PublisherIdentifier",
+									"value": "{{TenantID}}"
+								}
+							]
+						},
+						"description": "https://docs.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-reference#list-available-content\n\nhttps://docs.microsoft.com/en-us/microsoft-365/compliance/turn-audit-log-search-on-or-off?view=o365-worldwide"
+					},
+					"response": []
+				},
+				{
+					"name": "Stop a subscription",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://manage.office.com/api/v1.0/{{TenantID}}/activity/feed/subscriptions/stop?contentType={{contentType}}&PublisherIdentifier={{TenantID}}",
+							"protocol": "https",
+							"host": [
+								"manage",
+								"office",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"{{TenantID}}",
+								"activity",
+								"feed",
+								"subscriptions",
+								"stop"
+							],
+							"query": [
+								{
+									"key": "startTime",
+									"value": "{0}",
+									"disabled": true
+								},
+								{
+									"key": "endTime",
+									"value": "{1}",
+									"disabled": true
+								},
+								{
+									"key": "contentType",
+									"value": "{{contentType}}"
+								},
+								{
+									"key": "PublisherIdentifier",
+									"value": "{{TenantID}}"
+								}
+							]
+						},
+						"description": "https://docs.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-reference#list-available-content\n\nhttps://docs.microsoft.com/en-us/microsoft-365/compliance/turn-audit-log-search-on-or-off?view=o365-worldwide"
+					},
+					"response": []
+				},
+				{
+					"name": "List current subscriptions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://manage.office.com/api/v1.0/{{TenantID}}/activity/feed/subscriptions/list?PublisherIdentifier={{TenantID}}",
+							"protocol": "https",
+							"host": [
+								"manage",
+								"office",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"{{TenantID}}",
+								"activity",
+								"feed",
+								"subscriptions",
+								"list"
+							],
+							"query": [
+								{
+									"key": "PublisherIdentifier",
+									"value": "{{TenantID}}"
+								},
+								{
+									"key": "startTime",
+									"value": "2020-03-05T01:00:00.00Z",
+									"disabled": true
+								},
+								{
+									"key": "endTime",
+									"value": "2020-03-05T02:00:00.00Z",
+									"disabled": true
+								}
+							]
+						},
+						"description": "https://docs.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-reference#list-current-subscriptions"
+					},
+					"response": []
+				},
+				{
+					"name": "List available content",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://manage.office.com/api/v1.0/{{TenantID}}/activity/feed/subscriptions/content?startTime={{startTime}}&endTime={{endTime}}&contentType={{contentType}}&PublisherIdentifier={{TenantID}}",
+							"protocol": "https",
+							"host": [
+								"manage",
+								"office",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"{{TenantID}}",
+								"activity",
+								"feed",
+								"subscriptions",
+								"content"
+							],
+							"query": [
+								{
+									"key": "startTime",
+									"value": "{{startTime}}"
+								},
+								{
+									"key": "endTime",
+									"value": "{{endTime}}"
+								},
+								{
+									"key": "contentType",
+									"value": "{{contentType}}"
+								},
+								{
+									"key": "PublisherIdentifier",
+									"value": "{{TenantID}}"
+								}
+							]
+						},
+						"description": "https://docs.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-reference#list-available-content\n\nhttps://docs.microsoft.com/en-us/microsoft-365/compliance/turn-audit-log-search-on-or-off?view=o365-worldwide"
+					},
+					"response": []
+				},
+				{
+					"name": "List available content Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://manage.office.com/api/v1.0/{{TenantID}}/activity/feed/subscriptions/content?contentType=Audit.SharePoint&PublisherIdentifier={{TenantID}}",
+							"protocol": "https",
+							"host": [
+								"manage",
+								"office",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"{{TenantID}}",
+								"activity",
+								"feed",
+								"subscriptions",
+								"content"
+							],
+							"query": [
+								{
+									"key": "startTime",
+									"value": "{0}",
+									"disabled": true
+								},
+								{
+									"key": "endTime",
+									"value": "{1}",
+									"disabled": true
+								},
+								{
+									"key": "contentType",
+									"value": "Audit.SharePoint"
+								},
+								{
+									"key": "PublisherIdentifier",
+									"value": "{{TenantID}}"
+								}
+							]
+						},
+						"description": "https://docs.microsoft.com/en-us/office/office-365-management-api/office-365-management-activity-api-reference#list-available-content\n\nhttps://docs.microsoft.com/en-us/microsoft-365/compliance/turn-audit-log-search-on-or-off?view=o365-worldwide"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "0-GET ACCESS Token",
+			"item": [
+				{
+					"name": "Get Access Token (client_credentials)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(\"Hello!!!\");",
+									"",
+									"var json = JSON.parse(responseBody);",
+									"console.log(json.access_token);",
+									"postman.setEnvironmentVariable(\"AccessToken\", json.access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{ClientID}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{ClientSecret}}",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://localhost",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "https://manage.office.com/.default",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://login.microsoftonline.com/{{TenantID}}/oauth2/v2.0/token",
+							"protocol": "https",
+							"host": [
+								"login",
+								"microsoftonline",
+								"com"
+							],
+							"path": [
+								"{{TenantID}}",
+								"oauth2",
+								"v2.0",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "accessToken",
+				"value": "eyJ0eXAiOiJKV1QiLCJub25jZSI6IkRtVVFhbHVsdFFpY1ZfNHNCcVpuTDJ1MXk0eXh2WkxCS1JCVS14Qlo1ZEUiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik02cFg3UkhvcmFMc3ByZkplUkNqU3h1VVJoYyIsImtpZCI6Ik02cFg3UkhvcmFMc3ByZkplUkNqU3h1VVJoYyJ9.eyJhdWQiOiJodHRwczovL2dyYXBoLm1pY3Jvc29mdC5jb20iLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC9lOTVmMWIyMy1hYmFmLTQ1ZWUtODIxZC1iN2FiMjUxYWIzYmYvIiwiaWF0IjoxNTg0MDI3Nzc1LCJuYmYiOjE1ODQwMjc3NzUsImV4cCI6MTU4NDAzMTY3NSwiYWlvIjoiWTJOZ1lKRGcxZTFsZjV2b3ZPVEdsUEtYVzRwL0F3QT0iLCJhcHBfZGlzcGxheW5hbWUiOiJPMzY1LVVzYWdlLVJlcG9ydHMiLCJhcHBpZCI6ImZmZjM0N2FlLWQyNmMtNDQ3YS1iYTNkLWY4ZDhlODU2Y2U5OCIsImFwcGlkYWNyIjoiMSIsImlkcCI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0L2U5NWYxYjIzLWFiYWYtNDVlZS04MjFkLWI3YWIyNTFhYjNiZi8iLCJvaWQiOiI0ZTgyMzEzZC1jZmQ2LTQ1YjctYThmZC04MTYwOTBlZThiOGQiLCJyb2xlcyI6WyJSZXBvcnRzLlJlYWQuQWxsIl0sInN1YiI6IjRlODIzMTNkLWNmZDYtNDViNy1hOGZkLTgxNjA5MGVlOGI4ZCIsInRpZCI6ImU5NWYxYjIzLWFiYWYtNDVlZS04MjFkLWI3YWIyNTFhYjNiZiIsInV0aSI6IkIxaGRBVWcwdjB1OVhnRVp3S0lYQUEiLCJ2ZXIiOiIxLjAiLCJ4bXNfdGNkdCI6MTQzMDg1ODgwMH0.IsbdYuEBja7WVvJkXa6Ii5IJ0gK3xhKIiFea0mWobutMUM-fKHAgtJhrIpMrcFywwzl-Ex6B9PTyeFuLmpV7wQErpw6cWR7tem7yPRU73TBj736HulMGF17rXVFCtEJ-YYkNpJimaSgW9Y0pNgMNRatWgc7rubeq_HvVUXUEK_J8UYhb3vkqmOBrtvmRf1IhZsIlpek5EDwrW0VyL3DeNdC7Epy2A4tNH-m-zQCtM7O9P2mX5BsxyU0091Qylil14Zu-dx45pBXqoSpZll7XIaR9fOFvoxSZ8qGHEzOMvIz6q4wcNHC8lOfjjN0iWbv2ApHzGCl2E0rNJKE9lylp0w",
+				"type": "string"
+			},
+			{
+				"key": "tokenType",
+				"value": "Bearer",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
